@@ -6,8 +6,17 @@ on:
   pull_request:
   workflow_dispatch:
     inputs:
+      environment:
+        description: "Ambiente para execução"
+        required: true
+        type: choice
+        default: dev
+        options:
+          - dev
+          - hml
+          - prod
       tags:
-        description: "Tag dos cenários a executar (ex.: @GET ou @SMOKE)"
+        description: "Tag dos cenários (ex.: @GET ou @SMOKE)"
         required: false
         type: string
         default: ""
@@ -17,11 +26,15 @@ permissions:
 
 jobs:
   api-tests:
-    name: Executar testes de API
+    name: Testes de API - ${{ inputs.environment || 'dev' }}
     runs-on: ubuntu-latest
 
+    environment:
+      name: ${{ inputs.environment || 'dev' }}
+
     env:
-      API_BASE_URL: https://jsonplaceholder.typicode.com
+      TARGET_ENV: ${{ inputs.environment || 'dev' }}
+      API_BASE_URL: ${{ vars.API_BASE_URL }}
       KARATE_TAGS: ${{ inputs.tags || '' }}
 
     steps:
@@ -35,24 +48,69 @@ jobs:
           java-version: '21'
           cache: maven
 
-      - name: Verificar versão do Java e Maven
+      - name: Verificar configurações
         run: |
           java -version
           mvn -version
 
-      - name: Executar testes automatizados
+          if [ -z "$API_BASE_URL" ]; then
+            echo "::error::API_BASE_URL não configurada no GitHub Environment."
+            exit 1
+          fi
+
+          echo "Ambiente selecionado: $TARGET_ENV"
+          echo "URL configurada: $API_BASE_URL"
+
+      - name: Executar testes Karate
         run: |
           if [ -n "$KARATE_TAGS" ]; then
-            mvn -B clean test "-Dkarate.env=dev" "-Dkarate.tags=$KARATE_TAGS"
+            mvn -B clean test \
+              "-Dkarate.env=$TARGET_ENV" \
+              "-Dkarate.tags=$KARATE_TAGS"
           else
-            mvn -B clean test "-Dkarate.env=dev"
+            mvn -B clean test \
+              "-Dkarate.env=$TARGET_ENV"
           fi
+
+      - name: Gerar resumo dos testes
+        if: always()
+        run: |
+          python - <<'PY'
+          import glob
+          import xml.etree.ElementTree as ET
+          import os
+
+          files = glob.glob("target/surefire-reports/TEST-*.xml")
+
+          tests = failures = errors = skipped = 0
+
+          for file in files:
+              root = ET.parse(file).getroot()
+              tests += int(root.attrib.get("tests", 0))
+              failures += int(root.attrib.get("failures", 0))
+              errors += int(root.attrib.get("errors", 0))
+              skipped += int(root.attrib.get("skipped", 0))
+
+          passed = tests - failures - errors - skipped
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as summary:
+              summary.write("# Resultado dos testes Karate\n\n")
+              summary.write(f"- **Ambiente:** {os.environ['TARGET_ENV']}\n")
+              summary.write(f"- **Total:** {tests}\n")
+              summary.write(f"- **Aprovados:** {passed}\n")
+              summary.write(f"- **Falhas:** {failures}\n")
+              summary.write(f"- **Erros:** {errors}\n")
+              summary.write(f"- **Ignorados:** {skipped}\n")
+
+              if not files:
+                  summary.write("\n⚠️ Nenhum relatório XML do Surefire foi encontrado.\n")
+          PY
 
       - name: Publicar relatórios do Karate
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: karate-test-reports
+          name: karate-reports-${{ inputs.environment || 'dev' }}
           path: |
             target/karate-reports/
             target/surefire-reports/
