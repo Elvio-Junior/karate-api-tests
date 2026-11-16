@@ -1,0 +1,23 @@
+info:
+  name: Criar post com body extenso
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: https://jsonplaceholder.typicode.com/posts
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Automação de testes com Karate DSL",
+        "body": "Este cenário tem como objetivo validar a criação de um post com um conteúdo extenso. O texto contém várias frases para verificar se a API recebe e retorna corretamente todas as informações enviadas. Também buscamos identificar possíveis problemas relacionados ao tamanho do conteúdo, truncamento de caracteres ou alteração dos dados durante o processamento. A utilização de textos maiores contribui para ampliar a cobertura dos testes de API e verificar o comportamento do serviço diante de diferentes volumes de informação.",
+        "userId": 2
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

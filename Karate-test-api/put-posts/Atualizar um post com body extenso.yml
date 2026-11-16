@@ -1,0 +1,24 @@
+info:
+  name: Atualizar um post com body extenso
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: https://jsonplaceholder.typicode.com/posts/1
+  body:
+    type: json
+    data: |-
+      {
+        "id": 1,
+        "title": "Post atualizado com body extenso",
+        "body": "Este cenário tem como objetivo validar a criação de um post com um conteúdo extenso. O texto contém várias frases para verificar se a API recebe e retorna corretamente todas as informações enviadas. Também buscamos identificar possíveis problemas relacionados ao tamanho do conteúdo, truncamento de caracteres ou alteração dos dados durante o processamento. A utilização de textos maiores contribui para ampliar a cobertura dos testes de API e verificar o comportamento do serviço diante de diferentes volumes de informação.",
+        "userId": 1
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

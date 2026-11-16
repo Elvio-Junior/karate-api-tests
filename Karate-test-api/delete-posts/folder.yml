@@ -1,0 +1,6 @@
+info:
+  name: delete-posts
+  type: folder
+  seq: 1
+
+request: {}

@@ -1,0 +1,19 @@
+info:
+  name: Consultar posts de um userId inexistente
+  type: http
+  seq: 9
+
+http:
+  method: GET
+  url: https://jsonplaceholder.typicode.com/posts?userId=999
+  params:
+    - name: userId
+      value: "999"
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

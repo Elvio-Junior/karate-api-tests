@@ -1,0 +1,24 @@
+info:
+  name: Atualizar um post com ID negativo
+  type: http
+  seq: 9
+
+http:
+  method: PUT
+  url: https://jsonplaceholder.typicode.com/posts/abc
+  body:
+    type: json
+    data: |-
+      {
+        "id": "abc",
+        "title": "Post atualizado com Karate",
+        "body": "Conteúdo atualizado pelo teste automatizado.",
+        "userId": 1
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

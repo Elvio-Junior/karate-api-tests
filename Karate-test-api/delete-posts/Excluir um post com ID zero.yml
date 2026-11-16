@@ -1,0 +1,15 @@
+info:
+  name: Excluir um post com ID zero
+  type: http
+  seq: 3
+
+http:
+  method: DELETE
+  url: https://jsonplaceholder.typicode.com/posts/0
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

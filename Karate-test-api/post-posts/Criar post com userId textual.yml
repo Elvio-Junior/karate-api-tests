@@ -1,0 +1,23 @@
+info:
+  name: Criar post com userId textual
+  type: http
+  seq: 13
+
+http:
+  method: POST
+  url: https://jsonplaceholder.typicode.com/posts
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Teste automatizado com Karate",
+        "body": "Post criado durante a execução dos testes de API.",
+        "userId": "abc"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

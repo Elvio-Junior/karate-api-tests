@@ -1,0 +1,15 @@
+info:
+  name: Excluir um post com ID inexistente
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: https://jsonplaceholder.typicode.com/posts/999
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

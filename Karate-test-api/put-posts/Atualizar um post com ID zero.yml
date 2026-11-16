@@ -1,0 +1,24 @@
+info:
+  name: Atualizar um post com ID zero
+  type: http
+  seq: 8
+
+http:
+  method: PUT
+  url: https://jsonplaceholder.typicode.com/posts/0
+  body:
+    type: json
+    data: |-
+      {
+        "id": 0,
+        "title": "Post atualizado com Karate",
+        "body": "Conteúdo atualizado pelo teste automatizado.",
+        "userId": 1
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

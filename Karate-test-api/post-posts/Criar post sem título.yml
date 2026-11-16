@@ -1,0 +1,22 @@
+info:
+  name: Criar post sem título
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: https://jsonplaceholder.typicode.com/posts
+  body:
+    type: json
+    data: |-
+      {
+        "body": "Validando a criação de posts sem titulo",
+        "userId": 2
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

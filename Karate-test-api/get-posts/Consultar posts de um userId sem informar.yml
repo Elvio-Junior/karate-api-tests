@@ -1,0 +1,19 @@
+info:
+  name: Consultar posts de um userId sem informar
+  type: http
+  seq: 16
+
+http:
+  method: GET
+  url: https://jsonplaceholder.typicode.com/posts?userId=
+  params:
+    - name: userId
+      value: ""
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

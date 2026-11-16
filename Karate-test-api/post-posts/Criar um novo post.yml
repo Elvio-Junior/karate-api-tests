@@ -1,0 +1,23 @@
+info:
+  name: Criar um novo post
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: https://jsonplaceholder.typicode.com/posts
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Teste automatizado com Karate",
+        "body": "Post criado durante a execução dos testes de API.",
+        "userId": 1
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
