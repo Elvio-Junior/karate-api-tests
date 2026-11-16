@@ -3,7 +3,7 @@
 Feature: Consultar posts na API pública JSONPlaceholder
 
   Background:
-    * url 'https://jsonplaceholder.typicode.com'
+    * url baseUrl
     * def tempoMaximoResposta = 500
 
 

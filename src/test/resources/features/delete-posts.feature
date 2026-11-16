@@ -2,7 +2,7 @@
 Feature: Excluir posts na API pública JSONPlaceholder
 
   Background:
-    * url 'https://jsonplaceholder.typicode.com'
+    * url baseUrl
 
 
   @SMOKE @REGRESSAO @CONTRATO

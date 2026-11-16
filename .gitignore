@@ -1,2 +1,21 @@
-# Relatorios
+
+# Maven
 target/
+
+# Arquivos de ambiente locais
+.env
+.env.*
+environments/.env.*
+
+# Manter exemplo de configuração versionado
+!.env.example
+!environments/.env.example
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
