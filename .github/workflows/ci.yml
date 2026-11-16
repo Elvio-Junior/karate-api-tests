@@ -1,6 +1,8 @@
 
 name: API Tests - Karate
 
+run-name: API Tests | ${{ inputs.environment || 'dev' }} | ${{ inputs.tags || 'Todas as tags' }}
+
 on:
   push:
   pull_request:
@@ -26,7 +28,6 @@ permissions:
 
 jobs:
   api-tests:
-    run-name: API Tests | ${{ inputs.environment || 'dev' }} | ${{ inputs.tags || 'Todas as tags' }}
     runs-on: ubuntu-latest
 
     environment:
