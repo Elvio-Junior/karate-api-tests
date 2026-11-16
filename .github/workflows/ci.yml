@@ -26,7 +26,7 @@ permissions:
 
 jobs:
   api-tests:
-    name: Testes de API - ${{ inputs.environment || 'dev' }}
+    run-name: API Tests | ${{ inputs.environment || 'dev' }} | ${{ inputs.tags || 'Todas as tags' }}
     runs-on: ubuntu-latest
 
     environment:
