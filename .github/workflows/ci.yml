@@ -1,0 +1,60 @@
+
+name: API Tests - Karate
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Tag dos cenários a executar (ex.: @GET ou @SMOKE)"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  api-tests:
+    name: Executar testes de API
+    runs-on: ubuntu-latest
+
+    env:
+      API_BASE_URL: https://jsonplaceholder.typicode.com
+      KARATE_TAGS: ${{ inputs.tags || '' }}
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Verificar versão do Java e Maven
+        run: |
+          java -version
+          mvn -version
+
+      - name: Executar testes automatizados
+        run: |
+          if [ -n "$KARATE_TAGS" ]; then
+            mvn -B clean test "-Dkarate.env=dev" "-Dkarate.tags=$KARATE_TAGS"
+          else
+            mvn -B clean test "-Dkarate.env=dev"
+          fi
+
+      - name: Publicar relatórios do Karate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-test-reports
+          path: |
+            target/karate-reports/
+            target/surefire-reports/
+          if-no-files-found: warn
+          retention-days: 14
