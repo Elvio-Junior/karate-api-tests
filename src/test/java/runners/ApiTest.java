@@ -1,4 +1,3 @@
-
 package runners;
 
 import io.karatelabs.core.Runner;
@@ -13,17 +12,21 @@ class ApiTest {
     void executarTestesDeApi() {
 
         String ambiente = System.getProperty("karate.env", "dev");
+        String tags = System.getProperty("karate.tags");
 
-        SuiteResult resultado = Runner
+        var runner = Runner
                 .path("src/test/resources/features")
                 .karateEnv(ambiente)
                 .outputHtmlReport(true)
-                .outputDir("target/karate-reports")
-                .parallel(1);
+                .outputDir("target/karate-reports");
 
-        assertFalse(
-                resultado.isFailed(),
-                "Existem cenários de API com falha."
-        );
+        if (tags != null && !tags.isBlank()) {
+            runner.tags(tags);
+        }
+
+        SuiteResult resultado = runner.parallel(1);
+
+        assertFalse(resultado.isFailed(),
+                "Existem cenários de API com falha.");
     }
 }
